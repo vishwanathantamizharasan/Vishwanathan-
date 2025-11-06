@@ -140,15 +140,20 @@ def append_audit(action: str, detail: str) -> None:
 # =====================================================
 
 def init_storage():
+   
     """Create main CSV if missing with correct header. Use pandas only."""
+   
     try:
         pd.read_csv(DATA_FILE)
         cli_info(f"Using existing {DATA_FILE}.")
+  
     except Exception:
         df_empty = pd.DataFrame(columns=COLUMNS)
         df_empty.to_csv(DATA_FILE, index=False)
         cli_info(f"Created {DATA_FILE} with header.")
+  
     # ensure audit file exists
+
     try:
         pd.read_csv(AUDIT_FILE)
     except Exception:
@@ -386,7 +391,7 @@ def export_bills():
     """Produce bills_export.csv (snapshot) containing bill_amount for each customer."""
     df = load_data()
     if df.empty:
-        cli_warn("No data to export bills.")
+        warn("No data to export bills.")
         return
     out = df.copy()
     out["bill_amount"] = out.apply(lambda r: calculate_bill_row(r), axis=1)
@@ -440,7 +445,7 @@ def update_tariff():
     elif ch == "3":
         new_tariff = read_float("Enter global tariff per unit: ")
         df["tariff_per_unit"] = float(new_tariff)
-        save_data(df)
+        save_data(df) 
         append_audit("global_tariff_update", f"{new_tariff}")
         cli_info("Global tariff updated.")
     elif ch == "4":
@@ -494,7 +499,7 @@ def search_customer():
     hits = df[mask]
     if hits.empty:
         cli_info("No matches found.")
-        return
+        return 
     hits = hits.copy()
     hits["bill_amount"] = hits.apply(lambda r: calculate_bill_row(r), axis=1)
     pretty_print_df(hits[["customer_id", "name", "phone", "consumption", "bill_amount"]])
@@ -778,4 +783,5 @@ if __name__ == "__main__":
         main_menu()
     else:
         main_menu()
+
 
