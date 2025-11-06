@@ -52,73 +52,105 @@ logger = logging.getLogger("water_portal")
 # =====================================================
 
 def atomic_save(df: pd.DataFrame, path: str) -> None:
+    
     """Save DataFrame to CSV atomically (write to temp then rename)."""
+    
     fd, tmp = tempfile.mkstemp(prefix="tmp_", suffix=".csv", dir=".")
+    
     os.close(fd)
+    
     try:
         df.to_csv(tmp, index=False)
         shutil.move(tmp, path)
+   
     except Exception:
+     
         if os.path.exists(tmp):
             os.remove(tmp)
+      
         raise
 
 def init_storage() -> None:
     """Create data file with header if it doesn't exist."""
+   
     if not os.path.exists(DATA_FILE):
         columns = [
             "customer_id", "name", "address", "phone",
+        
             "last_month_reading", "current_reading",
             "consumption", "tariff_per_unit", "last_updated",
+        
             "paid", "paid_date"
         ]
         df = pd.DataFrame(columns=columns)
+    
         atomic_save(df, DATA_FILE)
         logger.info("Initialized storage with headers.")
+    
     else:
         logger.info("Data file exists: %s", DATA_FILE)
 
 def load_data() -> pd.DataFrame:
     """Load CSV into DataFrame with safe dtypes."""
+   
     try:
         df = pd.read_csv(DATA_FILE, dtype=str)
         # ensure consistent columns
         expected = [
             "customer_id", "name", "address", "phone",
+       
             "last_month_reading", "current_reading",
             "consumption", "tariff_per_unit", "last_updated",
+        
             "paid", "paid_date"
         ]
+       
         for col in expected:
+       
             if col not in df.columns:
                 df[col] = ""
         # convert numeric columns safely
+       
         for col in ("last_month_reading", "current_reading", "consumption", "tariff_per_unit"):
+      
             df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0)
+      
         df["customer_id"] = pd.to_numeric(df["customer_id"], errors="coerce").fillna(0).astype(int)
+      
         df["paid"] = df["paid"].astype(object).fillna(False)
+      
         return df
+   
     except FileNotFoundError:
         init_storage()
         return load_data()
 
 def save_data(df: pd.DataFrame) -> None:
+  
     """Persist DataFrame to CSV safely."""
     # ensure ordering of columns
+   
     cols = [
+       
         "customer_id", "name", "address", "phone",
+       
         "last_month_reading", "current_reading",
+      
         "consumption", "tariff_per_unit", "last_updated",
+      
         "paid", "paid_date"
     ]
     df = df[cols]
+  
     atomic_save(df, DATA_FILE)
     logger.info("Saved data (rows=%d).", len(df))
 
 def next_customer_id(df: pd.DataFrame) -> int:
+    
     if df.empty:
         return 1
     maxid = int(pd.to_numeric(df["customer_id"], errors="coerce").fillna(0).max())
+   
     return maxid + 1
 
 # =====================================================
@@ -573,3 +605,4 @@ if __name__ == "__main__":
     except Exception as e:
         logger.exception("Unhandled exception: %s", e)
         print("An unexpected error occurred. See portal.log for details.")
+
