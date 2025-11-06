@@ -1,25 +1,9 @@
 """
-Water Utility Consumption Portal - Expanded Version
-Allowed libs only: pandas, numpy, csv
-Filename: water_portal_expanded.py
-
 Team Code Index:
 Part 1 - Data Management & Initialization  : Rithwik
 Part 2 - Admin CRUD Operations             : Aditya Wankhade
 Part 3 - Advanced Admin Features           : Vishwanathan
 Part 4 - Client Interface & Main Menu      : Darshan
-
-Notes:
-- This expanded version adds many helpful features:
-  * Search filters (by consumption ranges, tariff ranges)
-  * Pagination for viewing large tables
-  * Multiple export options (bills_export.csv, summary_report.csv)
-  * Tariff slabs support (slab-based billing calculation)
-  * Audit trail (audit_log.csv) implemented via pandas writes
-  * Bulk update/import utilities with validation
-  * Interactive CLI help and safety confirmations
-  * Demo mode that populates sample data
-- Date fields are stored as strings (no datetime module used). Overdue logic is simplified.
 """
 
 # -------------------------
@@ -794,3 +778,4 @@ if __name__ == "__main__":
         main_menu()
     else:
         main_menu()
+
