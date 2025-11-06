@@ -166,7 +166,6 @@ def read_int(prompt: str, default: int = None) -> int:
         if val.isdigit():
             return int(val)
         print("Please enter a valid integer.")
-
 def read_float(prompt: str, default: float = None) -> float:
     while True:
         val = input(prompt).strip()
@@ -176,11 +175,9 @@ def read_float(prompt: str, default: float = None) -> float:
             return float(val)
         except ValueError:
             print("Please enter a valid number (e.g., 123.45).")
-
 def confirm(prompt: str = "Are you sure? (y/n): ") -> bool:
     ans = input(prompt).strip().lower()
     return ans in ("y", "yes")
-
 def add_customer() -> None:
     df = load_data()
     cid = next_customer_id(df)
@@ -190,7 +187,6 @@ def add_customer() -> None:
     phone = input("Phone: ").strip()
     last_read = read_float("Last month reading (units) [0]: ", default=0.0)
     tariff = read_float("Tariff per unit [1.0]: ", default=1.0)
-
     new = {
         "customer_id": cid,
         "name": name,
@@ -208,7 +204,6 @@ def add_customer() -> None:
     save_data(df)
     print(f"✅ Added customer {cid} - {name}")
     logger.info("Added customer id=%s, name=%s", cid, name)
-
 def update_consumption() -> None:
     df = load_data()
     if df.empty:
@@ -231,7 +226,6 @@ def update_consumption() -> None:
     save_data(df)
     print("✅ Consumption updated.")
     logger.info("Updated consumption for customer_id=%s : prev=%s new=%s", cid, prev, new_read)
-
 def delete_customer() -> None:
     df = load_data()
     if df.empty:
@@ -249,7 +243,6 @@ def delete_customer() -> None:
         logger.info("Deleted customer id=%s", cid)
     else:
         print("Delete cancelled.")
-
 def view_all_customers(limit: int = None) -> None:
     df = load_data()
     if df.empty:
@@ -605,4 +598,5 @@ if __name__ == "__main__":
     except Exception as e:
         logger.exception("Unhandled exception: %s", e)
         print("An unexpected error occurred. See portal.log for details.")
+
 
