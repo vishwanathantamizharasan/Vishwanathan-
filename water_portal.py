@@ -1,10 +1,4 @@
-"""
-Team Code Index:
-Part 1 - Data Management & Initialization  : Rithwik
-Part 2 - Admin CRUD Operations             : Aditya Wankhade
-Part 3 - Advanced Admin Features           : Vishwanathan
-Part 4 - Client Interface & Main Menu      : Darshan
-"""
+
 
 # -------------------------
 # IMPORTS (allowed only)
@@ -136,7 +130,7 @@ def append_audit(action: str, detail: str) -> None:
 
 # =====================================================
 # PART 1: DATA MANAGEMENT & INITIALIZATION
-# Rithwik
+
 # =====================================================
 
 def init_storage():
@@ -200,7 +194,7 @@ def next_customer_id(df: pd.DataFrame) -> int:
 
 # =====================================================
 # PART 2: ADMIN CRUD OPERATIONS
-# Aditya Wankhade
+
 # =====================================================
 
 def add_customer():
@@ -301,7 +295,7 @@ def export_customers_csv(path: str):
 
 # =====================================================
 # PART 3: ADVANCED ADMIN FEATURES
-# Vishwanathan
+
 # =====================================================
 
 # Billing calculation types: simple flat rate, or slab-based
@@ -537,8 +531,8 @@ def bulk_update_consumption_from_csv(path: str):
 
 # =====================================================
 # PART 4: CLIENT INTERFACE & MAIN MENU
-# Darshan
-# =====================================================
+
+# ===================================================
 
 def client_register():
     add_customer()
@@ -783,5 +777,6 @@ if __name__ == "__main__":
         main_menu()
     else:
         main_menu()
+
 
 
